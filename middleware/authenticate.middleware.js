@@ -16,7 +16,7 @@ const authenticate = (req, res, next) => {
           
             next()
         } else {
-            res.send("Please Login")
+            res.status(404).send("Please Login")
         }
     } else {
         res.send("Please Login")

@@ -2,7 +2,7 @@ let express=require("express")
 const { message } = require("statuses")
 let {connection}=require("./models/Database")
 let {router}=require("./Router/user.Router")
-let {notesRouter}=require("./Router/Note.Router")
+let {PostRouter}=require("./Router/Post.Router")
 let {authenticate}=require("./middleware/authenticate.middleware")
 let cors=require("cors")
 require("dotenv").config()
@@ -19,7 +19,7 @@ app.get("/",(req,res)=>{
 app.use("/users",router)
 
 app.use(authenticate)
-app.use("/notes",notesRouter)
+app.use("/posts",PostRouter)
 
 
 app.listen(process.env.port, async()=>{

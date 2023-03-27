@@ -9,11 +9,17 @@ let router=express.Router()
 router.use(express.json())
 
 router.post("/register",async(req,res)=>{
-  let {email,pass}=req.body
+  let {name,email,gender,pass,age,city,Is_married}=req.body
+     let IsexistUser= await userModel.find({email})
+
+     if(IsexistUser.length>0){
+     
+         res.send("User already exist, please login")
+     }else{
 
   try{
     bcrypt.hash(pass, 8, async (err, hash)=>{
-    const user=new userModel({email,pass:hash})
+    const user=new userModel({name,email,gender,pass:hash,age,city,Is_married})
     await user.save()
     res.send({message:"Register Succesfull!!"})
     });
@@ -22,6 +28,7 @@ router.post("/register",async(req,res)=>{
     console.log(err)
    
     }
+  }
 })
 
 router.post("/login",async(req,res)=>{
@@ -48,78 +55,10 @@ console.log(err)
 
   
 
-////////////////update////////////////
 
 
-router.patch("/update", async(req,res)=>{
-     let token= req.headers.authorization
-     try{
-     let decoded= jwt.verify(token,"masai")
-    
-      let payload=req.body
-     
-     if(decoded && payload.email!==undefined && payload.pass==undefined){
-         try{
-            await userModel.updateOne({_id:decoded.userId},payload)
 
-            res.send({"message":"Email Update Successfully!!!"})
-         }catch(err){
-             
-          res.status(404).send({"message":"Sorry!! User Id Is Wrong"})
-         }
-     }else if(decoded && payload.email==undefined && payload.pass!==undefined){
 
-      try{
-      let  {pass}=payload.pass
-        
-      bcrypt.hash(pass, 8, async (err, hash)=>{
-         await userModel.updateOne({_id:decoded.userId},{pass:hash})
-        res.send({message:"Password Updated!!"})
-        });
-
-     }catch(err){
-         
-      res.status(404).send({"message":"Sorry!! User Id Is Wrong"})
-     }
-      
-     }else if(decoded){
-      try{
-        let  {email,pass}=payload
-          
-        bcrypt.hash(pass, 8, async (err, hash)=>{
-           await userModel.updateOne({_id:decoded.userId},{email,pass:hash})
-          res.send({message:" User Updated Succesfully!!"})
-          });
-  
-       }catch(err){
-           
-        res.status(404).send({"message":"Sorry!! User Id Is Wrong"})
-       }
-     }else{
-        res.status(400).send({"message":err.message})
-     }
-    }catch(err){
-      res.status(400).send({"message":"You are not logged"})
-    }
-   
-})
-
-/////////////delete//////////////
-
-router.delete("/delete", async(req,res)=>{
-    try{
-      let token=req.headers.authorization
-       let decoded=jwt.verify(token,"masai")
-
-       await userModel.deleteOne({_id:decoded.userId})
-
-       res.send({"message":"User Deleted"})
-    }catch(err){
-
-      res.status(400).send({"message":"You are not Logged"})
-    }
-})
-console.log("ok")
  
   
   module.exports={router}

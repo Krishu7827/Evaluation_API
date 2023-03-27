@@ -1,8 +1,16 @@
 let mongoose=require("mongoose")
 
 const userSchema=mongoose.Schema({
- email:{type:String,require:true},
- pass:{type:String,require:true}
+ name:String,
+ email:String,
+ gender:String,
+ pass:String,
+ age:Number,
+ city:String,
+ Is_married:Boolean,
+ User_id:String
+
+
  
 
 },{
