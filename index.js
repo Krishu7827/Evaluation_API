@@ -14,7 +14,7 @@ app.use(express.json())
 app.get("/",(req,res)=>{
   res.send("HOME PAGE")
 })
-
+console.log("java")
 
 app.use("/users",router)
 
