@@ -1,6 +1,5 @@
 let mongoose=require("mongoose")
 require("dotenv").config()
-let connection =mongoose.connect("mongodb+srv://Krishna:Kumar@cluster0.xveo6ik.mongodb.net/PostApp?retryWrites=true&w=majority")
-
+let connection =mongoose.connect(process.env.mongo)
 
 module.exports={connection}
