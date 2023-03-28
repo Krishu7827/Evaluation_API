@@ -22,7 +22,7 @@ app.use(authenticate)
 app.use("/posts",PostRouter)
 
 
-app.listen(460, async()=>{
+app.listen(process.env.port, async()=>{
   try{
     await connection
    console.log("mongodb is connected")
@@ -31,6 +31,6 @@ app.listen(460, async()=>{
       console.log({err:message})
   }
 
-  console.log(`server is running on port ${460}`)
+  console.log(`server is running on port ${process.env.port}`)
    
 })
